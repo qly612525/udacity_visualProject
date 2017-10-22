@@ -27,9 +27,16 @@
 
 总结几个人的意见，汇总如下：
 
-* 图标应该有文字说明，不能只有图形。(见histtoryVersion/index1.html)
+* 节点应有文字说明，不能只有图形。(见histtoryVersion/index1.html)
+
+如果径向图形细节数据太过密集不易于文字展示，可以在树节点部分展示文字，让用户能够看清楚各个树节点表示的分组类型
+
+* 其他信息使用颜色或者特殊图形表示. (见historyVersion/index2.html)
+
+树节点对数据集的生还特性、性别、票类型进行了分类展示；其他信息可以通过颜色、或者图案进行表示
 
 ## 资源
 
 1. [创建和分享gist](http://bl.ocks.org)
 2. [可视化实例](https://bl.ocks.org/mbostock/4063530)
+3. [和弦图](https://bl.ocks.org/mbostock/4062006)
