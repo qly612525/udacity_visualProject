@@ -7,18 +7,47 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>可视化项目</title>
     <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
         .main {
             margin: 0 auto;
             width: 960px;
             height: 700px;
+            position: relative;
+        }
+
+        .main p {
+            position: absolute;
+            top: 200px;
+            left: 0;
+            width: 200px;
+            border-radius: 0.2em;
+            border: 1px solid #c1ced2;
+            box-shadow: 2px 2px 5px #b4bec1;
+            padding: 10px;
+        }
+
+        .legend {
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         .node circle {
-            fill: #999;
+            fill: transparent;
+            stroke: #999;
         }
 
         .node .bachelor {
-            fill: yellow;
+            stroke: yellow;
         }
 
         .node text {
@@ -47,13 +76,13 @@
             stroke-width: 1.5px;
         }
 
-        .link__less10 {
+        .link__less5 {
             stroke: red;
             stroke-width: 3px;
             stop-opacity: 1;
         }
 
-        .link__less30 {
+        .link__less40 {
             stroke: green;
             stroke-width: 3px;
             stop-opacity: 1;
@@ -62,12 +91,61 @@
         .link__less60 {
             stroke: blue;
         }
+
+        .legend {
+            border-radius: 0.2em;
+            border: 1px solid #c1ced2;
+            box-shadow: 2px 2px 5px #b4bec1;
+        }
+
+        .legend_title {
+            font-size: 15px;
+            font-family: 微软雅黑;
+            font-weight: bolder;
+        }
+
+        .legend_text {
+            font-size: 13px;
+        }
+
+        .age_less5 {
+            stroke: red;
+        }
+
+        .age_less40 {
+            stroke: green;
+        }
+
+        .age_more40 {
+            stroke: #555;
+        }
+
+        .legend_circle {
+            fill: transparent;
+        }
+
+        .person_bachelor {
+            stroke: yellow;
+        }
+
+        .person_family {
+            stroke: #999;
+        }
     </style>
 </head>
 
 <body>
+    <h1>泰坦尼克号乘客数据可视化</h1>
     <div class="main">
         <svg width="960" height="700"></svg>
+        <div class="legend">
+            <svg id="legend" width="150" height="140"></svg>
+        </div>
+        <p>
+            1. 泰坦尼克号乘客数据分为生还组和死亡组，死亡组 > 生还组
+            <br /> 2. 死亡组中：下等仓男性死亡人数最多，头等以及中等仓女性死亡人数最少
+            <br /> 3. 中等仓女性儿童的生还率较高 4. 单身与否并不影响生还率
+        </p>
     </div>
     <script src="d3/d3.v3.min.js"></script>
     <script src="js/main.js"></script>

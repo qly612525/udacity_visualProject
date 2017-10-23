@@ -147,6 +147,8 @@
         console.log(treeData);
         // 绘制图形
         draw(treeData);
+        // 绘制图例
+        drawLegend();
     });
 
     function createNodeStruct(name) {
@@ -177,13 +179,12 @@
                 if (d.target.name) {
                     return 'link';
                 }
-
                 var className = 'link';
                 var age = +d.target.Age;
                 if (age < 5) {
-                    className += ' link__less10';
+                    className += ' link__less5';
                 } else if (age < 40) {
-                    className += ' link__less30';
+                    className += ' link__less40';
                 }
                 return className;
             })
@@ -228,5 +229,97 @@
             .text(function (d) {
                 return d.name
             });
+    }
+
+    /**
+     * 绘制图形图例
+     * 
+     */
+    function drawLegend() {
+        var legendSVG = d3.select('#legend');
+
+        var legend = legendSVG.append('g')
+            .attr('class', 'legend')
+            .attr('x', 0)
+            .attr('y', 0)
+            .attr('width', 150)
+            .attr('height', 140);
+
+        // 标题部分
+        legend.append('text')
+            .attr('class', 'legend_title')
+            .attr('x', 25)
+            .attr('y', 25)
+            .text('图形');
+
+        legend.append('text')
+            .attr('class', 'legend_title')
+            .attr('x', 90)
+            .attr('y', 25)
+            .text('名称');
+
+        // 内容部分
+        legend.append('rect')
+            .attr('class', 'legend_rect age_less5')
+            .attr('x', 10)
+            .attr('y', 45)
+            .attr('width', 55)
+            .attr('height', 5);
+
+        legend.append('text')
+            .attr('class', 'legend_text')
+            .attr('x', 85)
+            .attr('y', 52)
+            .text('年龄 < 5');
+
+        legend.append('rect')
+            .attr('class', 'legend_rect age_less40')
+            .attr('x', 10)
+            .attr('y', 65)
+            .attr('width', 55)
+            .attr('height', 5);
+
+        legend.append('text')
+            .attr('class', 'legend_text')
+            .attr('x', 85)
+            .attr('y', 72)
+            .text('年龄 < 40');
+
+        legend.append('rect')
+            .attr('class', 'legend_rect age_more40')
+            .attr('x', 10)
+            .attr('y', 85)
+            .attr('width', 55)
+            .attr('height', 5);
+
+        legend.append('text')
+            .attr('class', 'legend_text')
+            .attr('x', 85)
+            .attr('y', 92)
+            .text('年龄 > 40');
+
+        legend.append('circle')
+            .attr('class', 'legend_circle person_bachelor')
+            .attr('cx', 40)
+            .attr('cy', 105)
+            .attr('r', 2.5);
+
+        legend.append('text')
+            .attr('class', 'legend_text')
+            .attr('x', 85)
+            .attr('y', 112)
+            .text('单身');
+
+        legend.append('circle')
+            .attr('class', 'legend_circle person_family')
+            .attr('cx', 40)
+            .attr('cy', 125)
+            .attr('r', 2.5);
+
+        legend.append('text')
+            .attr('class', 'legend_text')
+            .attr('x', 85)
+            .attr('y', 132)
+            .text('配偶|家人');
     }
 })(d3);
