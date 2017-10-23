@@ -44,10 +44,10 @@
 
         // 票类型
         // 头等
-        var upper_male_survival = createNodeStruct("头等仓男性生还组");
-        var upper_female_survival = createNodeStruct("头等仓女性生还组");
-        var upper_male_dead = createNodeStruct("头等仓男性死亡组");
-        var upper_female_dead = createNodeStruct("头等仓女性死亡组");
+        var upper_male_survival = createNodeStruct("头等舱男性生还组");
+        var upper_female_survival = createNodeStruct("头等舱女性生还组");
+        var upper_male_dead = createNodeStruct("头等舱男性死亡组");
+        var upper_female_dead = createNodeStruct("头等舱女性死亡组");
         // 增加到父组
         survival_male.children.push(upper_male_survival);
         survival_female.children.push(upper_female_survival);
@@ -55,10 +55,10 @@
         dead_female.children.push(upper_female_dead);
 
         // 中等
-        var middle_male_survival = createNodeStruct("中等仓男性生还组");
-        var middle_female_survival = createNodeStruct("中等仓女性生还组");
-        var middle_male_dead = createNodeStruct("中等仓男性死亡组");
-        var middle_female_dead = createNodeStruct("中等仓女性死亡组");
+        var middle_male_survival = createNodeStruct("中等舱男性生还组");
+        var middle_female_survival = createNodeStruct("中等舱女性生还组");
+        var middle_male_dead = createNodeStruct("中等舱男性死亡组");
+        var middle_female_dead = createNodeStruct("中等舱女性死亡组");
         // 增加到父组
         survival_male.children.push(middle_male_survival);
         survival_female.children.push(middle_female_survival);
@@ -66,10 +66,10 @@
         dead_female.children.push(middle_female_dead);
 
         // 低等
-        var lower_male_survival = createNodeStruct("下等仓男性生还组");
-        var lower_female_survival = createNodeStruct("下等仓女性生还组");
-        var lower_male_dead = createNodeStruct("下等仓男性死亡组");
-        var lower_female_dead = createNodeStruct("下等仓女性死亡组");
+        var lower_male_survival = createNodeStruct("下等舱男性生还组");
+        var lower_female_survival = createNodeStruct("下等舱女性生还组");
+        var lower_male_dead = createNodeStruct("下等舱男性死亡组");
+        var lower_female_dead = createNodeStruct("下等舱女性死亡组");
         // 增加到父组
         survival_male.children.push(lower_male_survival);
         survival_female.children.push(lower_female_survival);
