@@ -21,8 +21,9 @@
         if (error) throw error;
 
         // 数据处理转化为层级结构
-        // data --> survival --> sex --> pclass
-        // 按照上述结构构件多级层次树
+        // data --> survival --> sex
+        // data --> survival --> age
+        // data --> survival --> pclass
 
         var survival = createNodeStruct("生还组");
         var dead = createNodeStruct("死亡组");
@@ -75,10 +76,6 @@
         dead_male.children.push(lower_male_dead);
         dead_female.children.push(lower_female_dead);
 
-        /**
-         * 对原始数据每个乘客一条数据的结构按照上述的几个分组进行再组织
-         * 通过乘客信息数据的生还特征、性别特征、票类型特征划分为三个层次
-         */
         data.map(function (d) {
             d['value'] = 1;
             if (d.Survived === '1') {
@@ -93,7 +90,6 @@
                             break;
                         case "3":
                             lower_male_survival.children.push(d);
-                            break;
                         default:
                             console.log('不明确的数据项: ' + d);
                     }
@@ -107,12 +103,11 @@
                             break;
                         case "3":
                             lower_female_survival.children.push(d);
-                            break;
                         default:
                             console.log('不明确的数据项: ' + d);
                     }
                 } else {
-                    console.log('生还组中："性别"不明确的数据项: ' + d);
+                    console.log('不明确的数据项: ' + d);
                 }
             } else if (d.Survived === '0') {
                 // 死亡组
@@ -126,7 +121,6 @@
                             break;
                         case "3":
                             lower_male_dead.children.push(d);
-                            break;
                         default:
                             console.log('不明确的数据项: ' + d);
                     }
@@ -140,18 +134,17 @@
                             break;
                         case "3":
                             lower_female_dead.children.push(d);
-                            break;
                         default:
                             console.log('不明确的数据项: ' + d);
                     }
                 } else {
-                    console.log('死亡组中: 性别不明确的数据项: ' + d);
+                    console.log('不明确的数据项: ' + d);
                 }
             } else {
-                console.log('生还与否不明确的数据项: ' + d);
+                console.log('不明确的数据项: ' + d);
             }
         });
-
+        console.log(treeData);
         // 绘制图形
         draw(treeData);
         // 绘制图例
