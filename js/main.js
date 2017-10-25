@@ -1,9 +1,20 @@
 (function (d3) {
     // d3相关初始化
-    var svg = d3.select("svg"),
+    var svg = d3.select("#main").select('svg'),
         width = +svg.attr("width"),
         height = +svg.attr("height"),
         g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+    var subsvg = d3.select("#subChart").select('svg'),
+        subWidth = +subsvg.attr("width"),
+        subHeight = +subsvg.attr("height"),
+        padding = {
+            top: 40,
+            right: 40,
+            bottom: 30,
+            left: 40
+        },
+        subg = subsvg.append("g").attr("transform", "translate(" + padding.top + "," + padding.left + ")");
 
     // 构建树形结构
     var tree = d3.layout.tree()
@@ -152,6 +163,48 @@
             }
         });
 
+        // 更新各个node的value值，从下向上开始
+        // 票类型
+        // 头等
+        upper_male_survival.value = upper_male_survival.children.length;
+        upper_female_survival.value = upper_female_survival.children.length;
+        upper_male_dead.value = upper_male_dead.children.length;
+        upper_female_dead.value = upper_female_dead.children.length;
+
+        // 中等
+        middle_male_survival.value = middle_male_survival.children.length;
+        middle_female_survival.value = middle_female_survival.children.length;
+        middle_male_dead.value = middle_male_dead.children.length;
+        middle_female_dead.value = middle_female_dead.children.length;
+
+        // 下等
+        lower_male_survival.value = lower_male_survival.children.length;
+        lower_female_survival.value = lower_female_survival.children.length;
+        lower_male_dead.value = lower_male_dead.children.length;
+        lower_female_dead.value = lower_female_dead.children.length;
+
+        // 性别
+        survival_male.value = survival_male.children.reduce(function (prev, item) {
+            return prev + item.value
+        }, 0);
+        survival_female.value = survival_female.children.reduce(function (prev, item) {
+            return prev + item.value
+        }, 0);
+        dead_male.value = dead_male.children.reduce(function (prev, item) {
+            return prev + item.value
+        }, 0);
+        dead_female.value = dead_female.children.reduce(function (prev, item) {
+            return prev + item.value
+        }, 0);
+
+        // 生还
+        survival.value = survival.children.reduce(function (prev, item) {
+            return prev + item.value
+        }, 0);
+        dead.value = dead.children.reduce(function (prev, item) {
+            return prev + item.value
+        }, 0);
+
         // 绘制图形
         draw(treeData);
         // 绘制图例
@@ -210,7 +263,8 @@
             .attr('r', function (d) {
                 // 分组节点，直接放回2.5的半径
                 if (d.name) {
-                    return 2.5;
+                    d.isCluster = true;
+                    return 6;
                 }
 
                 var sibsp = +d.SibSp;
@@ -227,6 +281,8 @@
             .attr('class', function (d) {
                 if (d.isBachelor) {
                     return 'bachelor';
+                } else if (d.isCluster) {
+                    return 'cluster';
                 }
             });
 
@@ -236,6 +292,9 @@
             .text(function (d) {
                 return d.name
             });
+
+        // 绑定事件处理
+        bindEvent();
     }
 
     /**
@@ -328,5 +387,66 @@
             .attr('x', 85)
             .attr('y', 132)
             .text('配偶|家人');
+    }
+
+    /**
+     * 绑定事件处理
+     * 
+     * @param {any} node 
+     */
+    function bindEvent() {
+        var tip = document.getElementById('tip');
+        var cluster = svg.selectAll('.cluster')
+            .on('mouseover', function (d) {
+                tip.style.display = 'block';
+            }).on('mouseout', function (d) {
+                tip.style.display = 'none';
+            }).on('click', function (d, i) {
+                // 清空上次图形
+                subg.selectAll('*').remove();
+                // 显示图形
+                // 根据层级深度显示不同的图形
+                createChart(d);
+            });
+    }
+
+    // 根据depth值生产不同的图表控制区
+    function createChart(d) {
+        var x = [],
+            y = [];
+        d.children.map(function (c) {
+            x.push(c['name']);
+            y.push(+c['value']);
+        });
+        // 定义x轴的比例尺
+        var xScale = d3.scale.ordinal()
+            .domain(x)
+            .rangeRoundBands([0, subWidth - padding.left - padding.right], 0, 0);
+        // 定义y轴的比例尺(线性比例尺)
+        var yScale = d3.scale.linear()
+            .domain([0, d3.max(y)])
+            .range([subHeight - padding.top - padding.bottom, 0]);
+        // 定义x轴和y轴
+        var xAxis = d3.svg.axis()
+            .scale(xScale)
+            .orient('bottom');
+        var yAxis = d3.svg.axis()
+            .scale(yScale)
+            .orient('left');
+        // 添加坐标轴元素
+        subg.append('g')
+            .attr('class', 'axis')
+            .attr('transform', 'translate(0,' + (subHeight - padding.bottom - padding.top) + ')')
+            .call(xAxis);
+        subg.append('g')
+            .attr('class', 'axis')
+            .call(yAxis);
+
+        // 增加title
+        subg.append('text')
+            .attr('class', 'chart_title')
+            .attr('x', '20')
+            .attr('y', '0')
+            .text(d.name);
     }
 })(d3);
