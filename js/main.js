@@ -264,7 +264,7 @@
                 // 分组节点，直接放回2.5的半径
                 if (d.name) {
                     d.isCluster = true;
-                    return 6;
+                    return 8;
                 }
 
                 var sibsp = +d.SibSp;
@@ -396,6 +396,7 @@
      */
     function bindEvent() {
         var tip = document.getElementById('tip');
+        var dom = document.getElementById('subChart');
         var cluster = svg.selectAll('.cluster')
             .on('mouseover', function (d) {
                 tip.style.display = 'block';
@@ -405,27 +406,38 @@
                 // 清空上次图形
                 subg.selectAll('*').remove();
                 // 显示图形
+                dom.style.display = 'block';
                 // 根据层级深度显示不同的图形
                 createChart(d);
             });
+        var close = document.getElementById('close');
+        close.addEventListener('click', function () {
+            dom.style.display = 'none';
+        });
     }
 
     // 根据depth值生产不同的图表控制区
     function createChart(d) {
         var x = [],
-            y = [];
+            y = [],
+            data = [];
         d.children.map(function (c) {
             x.push(c['name']);
             y.push(+c['value']);
+            data.push({
+                x,
+                y
+            });
         });
         // 定义x轴的比例尺
+        // 定义y轴的比例尺(线性比例尺)
         var xScale = d3.scale.ordinal()
             .domain(x)
-            .rangeRoundBands([0, subWidth - padding.left - padding.right], 0, 0);
-        // 定义y轴的比例尺(线性比例尺)
+            .rangeBands([0, subWidth - padding.left - padding.right], 0.5);
         var yScale = d3.scale.linear()
             .domain([0, d3.max(y)])
-            .range([subHeight - padding.top - padding.bottom, 0]);
+            .range([subHeight - padding.bottom - padding.top, 0]);
+
         // 定义x轴和y轴
         var xAxis = d3.svg.axis()
             .scale(xScale)
@@ -448,5 +460,25 @@
             .attr('x', '20')
             .attr('y', '0')
             .text(d.name);
+        // 柱形图之间的距离
+        var rectPadding = 20 * x.length;
+        // 增加rect柱状图
+        subg.selectAll('.bar')
+            .data(y)
+            .enter()
+            .append('rect')
+            .attr("class", "bar")
+            .attr("x", function (d, i) {
+                return xScale(x[i]);
+            })
+            .attr("y", function (d) {
+                return yScale(d);
+            })
+            .attr('width', function (d) {
+                return xScale.rangeBand();
+            })
+            .attr('height', function (d) {
+                return subHeight - padding.top - padding.bottom - yScale(d);
+            });
     }
 })(d3);

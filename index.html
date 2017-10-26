@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>可视化项目</title>
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
     <style>
         html,
         body {
@@ -159,6 +160,8 @@
             border-radius: 10px;
             background-color: rgba(128, 128, 128, 0.1);
             box-shadow: 5px 5px 10px rgba(128, 128, 128, 0.3);
+
+            display: none;
         }
 
         .chart_title {
@@ -175,6 +178,26 @@
             stroke: #000;
             fill: none;
         }
+
+        .bar {
+            fill: steelblue;
+        }
+
+        .bar:hover {
+            fill: brown;
+        }
+
+        .close {
+            text-align: center;
+        }
+
+        .close i {
+            font-size: 18px;
+            color: red;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
     </style>
 </head>
 
@@ -189,10 +212,12 @@
             1. 泰坦尼克号乘客数据分为生还组和死亡组，死亡组 > 生还组
             <br /> 2. 死亡组中：下等舱男性死亡人数最多，头等以及中等舱女性死亡人数最少
             <br /> 3. 中等舱女性儿童的生还率较高
-            <br /> 4. 单身与否并不影响生还率
         </p>
         <div class="tip" id="tip">点我！</div>
         <div class="subChart" id="subChart">
+            <div class="close">
+                <i id="close" class="fa fa-times" aria-hidden="true" title="关闭图形"></i>
+            </div>
             <svg width="400" height="300"></svg>
         </div>
     </div>
